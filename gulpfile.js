@@ -1,11 +1,9 @@
 var PATH = {
     scss: './src/scss/**/*.scss',
     js: './src/js/**/*.js',
-    //js_vendor: [
-    //    './node_modules/jquery/dist/jquery.min.js',
-    //    './node_modules/muicss/dist/js/mui.min.js',
-    //    './node_modules/mustache/mustache.min.js'
-    //],
+    js_vendor: [
+        './node_modules/jquery/dist/jquery.min.js'
+    ],
     //css_vendor: [
     //    './node_modules/muicss/dist/css/mui.min.css',
     //    './node_modules/font-awesome/css/font-awesome.min.css'
@@ -74,12 +72,11 @@ gulp.task('js', function () {
         .pipe(browserSync.stream());
 });
 
-//gulp.task('js-vendor', function () {
-//    return gulp.src(PATH.js_vendor)
-//        .pipe($.concat('vendor.js'))
-//        .pipe(gulp.dest(PATH.DIST + '/js'))
-//        .pipe(browserSync.stream());
-//});
+gulp.task('js-vendor', function () {
+    return gulp.src(PATH.js_vendor)
+        .pipe($.concat('vendor.js'))
+        .pipe(gulp.dest(PATH.DIST + '/js'))
+});
 
 //gulp.task('css-vendor', function () {
 //    return gulp.src(PATH.css_vendor)
@@ -113,6 +110,9 @@ gulp.task('serve', function () {
 
     // // Watch .js files
     gulp.watch(PATH.js, ['js']);
+
+    // Watch vendor.js
+    gulp.watch(PATH.js_vendor, ['js-vendor']);
     //
     // // Watch image files
     //gulp.watch('./img/**/*', ['image']);
@@ -123,4 +123,4 @@ gulp.task('serve', function () {
 });
 
 // Initialization
-gulp.task('default', ['styles', 'copy', /*'js-vendor', 'css-vendor', 'fonts-vendor',*/ 'js', 'serve']);
+gulp.task('default', ['styles', 'copy', 'js-vendor', /*'css-vendor', 'fonts-vendor',*/ 'js', 'serve']);
