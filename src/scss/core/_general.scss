@@ -1,0 +1,23 @@
+body {
+    min-width: 320px;
+}
+
+*, :after, :before {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0 15px;
+}
+
+.visible {
+    display: block;
+}

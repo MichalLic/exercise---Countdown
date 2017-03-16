@@ -1,0 +1,15 @@
+#start{
+    display: inline-block;
+    width: 100%;
+    margin: 20px 0;
+    padding: 5px 0;
+    background-color: #FFFFAA;
+    cursor: pointer;
+    border: 1px solid #ff9619;
+
+    &.focus{
+        outline: none;
+        border: none;
+
+    }
+}

@@ -1,0 +1,32 @@
+.time-block{
+    text-align: center;
+    background-color: #72C1F7;
+    padding: 20px 0;
+    font-size: 25px;
+    color: #ffffff;
+    font-style: italic;
+
+}
+
+.form-section{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.date-block{
+    display: block;
+}
+
+.timeout{
+    .remained{
+        padding-top: 15px;
+        display: block;
+        text-align: center;
+        font-size: 30px;
+    }
+}
+
+.difference-section{
+    display: none;
+}
