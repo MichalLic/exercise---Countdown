@@ -3,9 +3,13 @@
     width: 100%;
     margin: 20px 0;
     padding: 5px 0;
-    background-color: #FFFFAA;
+    background-color: $color-grey;
     cursor: pointer;
-    border: 1px solid #ff9619;
+    border: 1px solid darken($color-grey, 40%);
+
+    &:hover{
+    background-color: $color-grey-light;
+    }
 
     &.focus{
         outline: none;

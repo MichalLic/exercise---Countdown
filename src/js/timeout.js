@@ -5,18 +5,19 @@ var Timeout = {
 
     //init
     init: function () {
-        Timeout.setInterval();
+        Timeout.setLocalTime();
         Timeout.onSend($('#start'));
+        Timeout.onClearInterval();
     },
 
     //function
     setCurrentTime: function () {
         var myDate = new Date();
-        var actualTime = myDate.toLocaleTimeString();
-        $('.current-time').html(actualTime);
+        var currentTime = myDate.toLocaleTimeString();
+        $('.current-time').html(currentTime);
     },
 
-    setInterval: function () {
+    setLocalTime: function () {
         setInterval(function () {
             Timeout.setCurrentTime()
         }, 1000);
@@ -27,9 +28,11 @@ var Timeout = {
             Timeout.getFormValue($('.set-time'));
             Timeout.addClassToShow();
             Timeout.durationEvent();
+            Timeout.setDifferenceInterval();
         });
     },
-    addClassToShow: function (){
+
+    addClassToShow: function () {
         $('.difference-section').addClass('visible');
     },
 
@@ -42,15 +45,16 @@ var Timeout = {
         return dataValue;
     },
 
+    getTextareaValue: function (form, textarea) {
+        var val = form.find(textarea).val();
+        return val;
+    },
+
     durationEvent: function () {
         var dateValue = Timeout.getFormValue($('.set-time'));
         var dateStart = new Date();
         //var dateStop = new Date(dateValue.year, dateValue.month, dateValue.day, dateValue.hour, dateValue.minute);
-        var dateStop = new Date(2017,2,16,11,55,0);
-
-
-        var a = dateStart.toLocaleTimeString();
-        var b = dateStop.toLocaleTimeString();
+        var dateStop = new Date(2017, 2, 16, 17, 59, 55);
 
         var difference = Math.abs(dateStop.getTime() - dateStart.getTime());
         var secDifference = difference / 1000;
@@ -59,11 +63,31 @@ var Timeout = {
         var hours = Math.floor(secDifference / 3600 % 24);
         var minutes = Math.floor(secDifference / 60 % 60);
         var seconds = Math.floor(secDifference % 60);
+        //var interval = setInterval(function () {
+        //    Timeout.durationEvent()
+        //}, 1000);
 
+        $('.event-remained').html('To designated ' + Timeout.getTextareaValue($('.set-time'), $('#event')) + ' remained:');
         $('.remained').html('Days: ' + days + ' Hours: ' + hours + ' Minutes: ' + minutes + ' Seconds: ' + seconds);
-        setInterval(function(){Timeout.durationEvent()},1000);
-    }
+        //setInterval(function(){Timeout.durationEvent()},1000);
+    },
 
+    setDifferenceInterval: function () {
+        setInterval(Timeout.durationEvent(), 1000);
+    },
+
+    onClearInterval: function () {
+        var myInterval = setInterval(Timeout.durationEvent(), 1000);
+        var va = Timeout.setDifferenceInterval();
+        $('#clear').on('click', function () {
+            console.log('opoapaopa');
+            console.log(va);
+            console.log(myInterval);
+
+            clearInterval(myInterval);
+            clearInterval(Timeout.setDifferenceInterval());
+        });
+    }
 
 };
 $(document).ready(function () {

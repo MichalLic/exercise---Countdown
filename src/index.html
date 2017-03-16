@@ -16,11 +16,11 @@
         <form action="" class="set-time">
             <div class="date-block">
                 <label for="year">Year:</label>
-                <input type="text" class="date" name="year" id="year" maxlength="4" placeholder="Year"/>
+                <input type="number" class="date" name="year" id="year" maxlength="4" placeholder="Year"/>
             </div>
             <div class="date-block">
                 <label for="month">Month:</label>
-                <input type="number" class="date" name="month" id="month" maxlength="2" min="0" max="12"
+                <input type="text" class="date" name="month" id="month" maxlength="2" min="0" max="12"
                        placeholder="Month"/>
             </div>
             <div class="date-block">
@@ -37,8 +37,8 @@
                        placeholder="Minute"/>
             </div>
             <div class="date-block">
-                <label for="event"></label>
-                <textarea name="event" id="event" cols="30" rows="1"></textarea>
+                <label for="event">Name of event</label>
+                <textarea name="event" id="event" rows="3" placeholder="name of event"></textarea>
             </div>
         </form>
         <button id="start">Start</button>
@@ -46,9 +46,10 @@
 </div>
 <div class="difference-section time-block">
     <div class="container">
-        <div class="timeout"><span>To designated date remained:</span><span class="remained"></span></div>
+        <div class="timeout"><span class="event-remained"></span><span class="remained"></span></div>
     </div>
 </div>
+<button id="clear">Stop Time!</button>
 
 <script type="text/javascript" src="js/vendor.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
