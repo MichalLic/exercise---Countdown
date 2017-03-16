@@ -9,9 +9,9 @@
         height: 34px;
         font-size: 14px;
         line-height: 1.42857143;
-        color: #555;
-        background-color: #fff;
-        border: 1px solid #ccc;
+        color: $color-grey-very-dark;
+        background-color: $color-white;
+        border: 1px solid $color-grey-dark;
         border-radius: 4px;
         &:focus{
             border-color: #66afe9;

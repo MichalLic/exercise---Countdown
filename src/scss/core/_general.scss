@@ -1,5 +1,12 @@
+//sticky footer
 body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
     min-width: 320px;
+}
+main {
+    flex: 1;
 }
 
 *, :after, :before {
@@ -20,4 +27,13 @@ a {
 
 .visible {
     display: block;
+}
+
+.time-block{
+    text-align: center;
+    background-color: $color-blue;
+    padding: 20px 0;
+    font-size: 25px;
+    color: $color-white;
+    font-style: italic;
 }

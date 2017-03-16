@@ -6,11 +6,14 @@
     <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
+<header>
 <div class="time-block">
     <div class="container">
         <span class="current-time"></span>
     </div>
 </div>
+</header>
+<main>
 <div class="form-section">
     <div class="container">
         <form action="" class="set-time">
@@ -24,20 +27,20 @@
                        placeholder="Month"/>
             </div>
             <div class="date-block">
-                <label for="day">Day</label>
+                <label for="day">Day:</label>
                 <input type="number" class="date" name="day" id="day" maxlength="2" max="31" placeholder="Day"/>
             </div>
             <div class="date-block">
-                <label for="hour">Hour</label>
+                <label for="hour">Hour:</label>
                 <input type="number" class="date" name="hour" id="hour" maxlength="2" max="24" placeholder="Hour"/>
             </div>
             <div class="date-block">
-                <label for="minute">Minute</label>
+                <label for="minute">Minute:</label>
                 <input type="number" class="date" name="minute" id="minute" maxlength="2" max="60"
                        placeholder="Minute"/>
             </div>
             <div class="date-block">
-                <label for="event">Name of event</label>
+                <label for="event">Name of event:</label>
                 <textarea name="event" id="event" rows="3" placeholder="name of event"></textarea>
             </div>
         </form>
@@ -50,7 +53,13 @@
     </div>
 </div>
 <button id="clear">Stop Time!</button>
-
+</main>
+<footer>
+    <div class="container">
+        <span>Set TimeOut App!</span>
+        <span>&copy ML 2017 </span>
+    </div>
+</footer>
 <script type="text/javascript" src="js/vendor.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
 </body>

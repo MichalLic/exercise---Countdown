@@ -1,19 +1,20 @@
-#start{
+#start {
     display: inline-block;
     width: 100%;
     margin: 20px 0;
-    padding: 5px 0;
-    background-color: $color-grey;
+    padding: 10px 0;
+    background-color: $color-grey-dark;
     cursor: pointer;
-    border: 1px solid darken($color-grey, 40%);
+    border: 1px solid $color-grey;
+    border-radius: 4px;
+    transition: .3s;
 
-    &:hover{
-    background-color: $color-grey-light;
+    &:hover {
+        background-color: $color-grey;
     }
 
-    &.focus{
+    &.focus {
         outline: none;
         border: none;
-
     }
 }
