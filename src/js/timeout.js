@@ -58,6 +58,7 @@ var Timeout = {
     durationEvent: function () {
         var dateValue = Timeout.getFormValue($('.set-time'));
         var currentDate = new Date();
+
         var fullDateSplit = dateValue.fulldate.split('-');
          /* @ TODO Cannot read property 'split' of undefine...*/
         var getMonth = parseInt(fullDateSplit[1]) - 1;
@@ -88,9 +89,7 @@ var Timeout = {
 
     //countdown time to designated event
     setDifferenceInterval: function () {
-        setInterval(function () {
-            Timeout.durationEvent()
-        }, 1000);
+        setInterval(function () {Timeout.durationEvent()},1000);
     },
 
     inputValid: function (form) {
@@ -114,8 +113,7 @@ var Timeout = {
     },
 
     resetForm: function (form) {
-        console.log(form);
-        setTimeout(function(){form[0].reset();}, 2000)
+        setTimeout(function(){form[0].reset()}, 2000);
     //     @ todo mayby settime in general function??
     },
 
@@ -130,16 +128,10 @@ var Timeout = {
     },
 
     onClearInterval: function () {
-        var myInterval = setInterval(function () {
-            Timeout.durationEvent()
-        }, 1000);
         var va = Timeout.setDifferenceInterval();
         $('#clear').on('click', function () {
             console.log('opoapaopa');
             console.log(va);
-            console.log(myInterval);
-
-            clearInterval(myInterval);
             clearInterval(Timeout.setDifferenceInterval());
         });
     }
