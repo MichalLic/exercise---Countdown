@@ -26,14 +26,14 @@ var Timeout = {
     onSend: function (btn) {
         $(btn).on('click', function () {
             Timeout.getFormValue($('.set-time'));
-            Timeout.addClassToShow();
+            Timeout.show($('.difference-section'));
             Timeout.durationEvent();
             Timeout.setDifferenceInterval();
         });
     },
 
-    addClassToShow: function () {
-        $('.difference-section').addClass('visible');
+    show: function (element) {
+        element.addClass('visible');
     },
 
     getFormValue: function (form) {
@@ -45,7 +45,7 @@ var Timeout = {
         return dataValue;
     },
 
-    getTextareaValue: function (form, textarea) {
+    getFieldValue: function (form, textarea) {
         var val = form.find(textarea).val();
         return val;
     },
@@ -66,7 +66,7 @@ var Timeout = {
         var minutes = Math.floor(secDifference / 60 % 60);
         var seconds = Math.floor(secDifference % 60);
 
-        $('.event-remained').html('To designated ' + Timeout.getTextareaValue($('.set-time'), $('#event')) + ' remained:');
+        $('.event-remained').html('To designated ' + Timeout.getFieldValue($('.set-time'), $('#event')) + ' remained:');
         $('.remained').html('Days: ' + days + ' Hours: ' + hours + ' Minutes: ' + minutes + ' Seconds: ' + seconds);
     },
 
