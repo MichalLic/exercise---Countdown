@@ -53,8 +53,10 @@ var Timeout = {
     durationEvent: function () {
         var dateValue = Timeout.getFormValue($('.set-time'));
         var dateStart = new Date();
-        //var dateStop = new Date(dateValue.year, dateValue.month, dateValue.day, dateValue.hour, dateValue.minute);
-        var dateStop = new Date(2017, 2, 16, 17, 59, 55);
+        var fullDateSplit = dateValue.fulldate.split('-');
+        var getMonth = parseInt(fullDateSplit[1]) - 1 ;
+        var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], dateValue.hour, dateValue.minute);
+        //var dateStop = new Date(2017, 2, 16, 17, 59, 55);
 
         var difference = Math.abs(dateStop.getTime() - dateStart.getTime());
         var secDifference = difference / 1000;
@@ -63,17 +65,13 @@ var Timeout = {
         var hours = Math.floor(secDifference / 3600 % 24);
         var minutes = Math.floor(secDifference / 60 % 60);
         var seconds = Math.floor(secDifference % 60);
-        //var interval = setInterval(function () {
-        //    Timeout.durationEvent()
-        //}, 1000);
 
         $('.event-remained').html('To designated ' + Timeout.getTextareaValue($('.set-time'), $('#event')) + ' remained:');
         $('.remained').html('Days: ' + days + ' Hours: ' + hours + ' Minutes: ' + minutes + ' Seconds: ' + seconds);
-        //setInterval(function(){Timeout.durationEvent()},1000);
     },
 
     setDifferenceInterval: function () {
-        setInterval(Timeout.durationEvent(), 1000);
+        setInterval(function(){Timeout.durationEvent()}, 1000);
     },
 
     onClearInterval: function () {

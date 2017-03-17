@@ -57,7 +57,7 @@ gulp.task('watch', function () {
 
     // add browserSync.reload to the tasks array to make
     // all browsers reload after tasks are complete.
-    gulp.watch('./*.html').on('change', browserSync.reload);
+    gulp.watch('./src/*.html', ['copy']).on('change', browserSync.reload);
 });
 
 //js task
@@ -119,7 +119,9 @@ gulp.task('serve', function () {
 
     // add browserSync.reload to the tasks array to make
     // all browsers reload after tasks are complete.
-    gulp.watch('./*.html').on('change', browserSync.reload);
+    gulp.watch('./src/*.html', ['copy']).on('change', function () {
+        setTimeout(browserSync.reload, 1500);
+    });
 });
 
 // Initialization
