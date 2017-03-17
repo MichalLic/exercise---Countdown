@@ -1,0 +1,43 @@
+//sticky footer
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    min-width: 320px;
+}
+main {
+    flex: 1;
+}
+
+*, :after, :before {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0 15px;
+}
+
+.visible {
+    display: block!important;
+}
+
+.invisible {
+    display: none;
+}
+
+.time-block{
+    text-align: center;
+    background-color: $color-blue;
+    padding: 20px 0;
+    font-size: 25px;
+    color: $color-white;
+    font-style: italic;
+}

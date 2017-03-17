@@ -1,0 +1,47 @@
+main{
+    background-color: $color-grey-light;
+}
+
+.form-section{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.date-block{
+    display: block;
+}
+
+.timeout{
+    .remained{
+        padding-top: 15px;
+        display: block;
+        text-align: center;
+        font-size: 30px;
+    }
+}
+
+.error-message p{
+    color: red;
+    font-size: 21px;
+    text-align: center;
+    padding: 10px 0 5px 0;
+}
+
+footer {
+    background-color: $color-grey-dark;
+    padding: 15px 0;
+    color: $color-grey-very-dark;
+    font-style: oblique;
+    font-size: 15px;
+
+    span{
+        display: block;
+        width: 50%;
+        float: left;
+        text-align: start;
+        &:last-child{
+            text-align: end;
+        }
+    }
+}
