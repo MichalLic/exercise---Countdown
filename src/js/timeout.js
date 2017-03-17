@@ -27,6 +27,9 @@ var Timeout = {
     onSend: function (btn) {
         $(btn).on('click', function () {
             Timeout.inputValid(Timeout.getFormValue($('.set-time')));
+            // todo get in variables
+            Timeout.inactiveField($('.date'));
+            Timeout.resetForm($('.set-time'));
         });
     },
 
@@ -56,6 +59,7 @@ var Timeout = {
         var dateValue = Timeout.getFormValue($('.set-time'));
         var currentDate = new Date();
         var fullDateSplit = dateValue.fulldate.split('-');
+         /* @ TODO Cannot read property 'split' of undefine...*/
         var getMonth = parseInt(fullDateSplit[1]) - 1;
         var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], dateValue.hour, dateValue.minute);
 
@@ -103,6 +107,16 @@ var Timeout = {
             Timeout.setDifferenceInterval();
             Timeout.hide('.error-message');
         }
+    },
+
+    inactiveField: function (input){
+        input.attr('disabled', 'disabled');
+    },
+
+    resetForm: function (form) {
+        console.log(form);
+        setTimeout(function(){form[0].reset();}, 2000)
+    //     @ todo mayby settime in general function??
     },
 
     //set max value if field has bad filling
