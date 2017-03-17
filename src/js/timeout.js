@@ -25,15 +25,16 @@ var Timeout = {
 
     onSend: function (btn) {
         $(btn).on('click', function () {
-            Timeout.getFormValue($('.set-time'));
-            Timeout.show($('.difference-section'));
-            Timeout.durationEvent();
-            Timeout.setDifferenceInterval();
+            Timeout.inputValid();
         });
     },
 
     show: function (element) {
-        element.addClass('visible');
+        $(element).addClass('visible');
+    },
+
+    hide: function (element) {
+        $(element).removeClass('visible');
     },
 
     getFormValue: function (form) {
@@ -54,7 +55,7 @@ var Timeout = {
         var dateValue = Timeout.getFormValue($('.set-time'));
         var dateStart = new Date();
         var fullDateSplit = dateValue.fulldate.split('-');
-        var getMonth = parseInt(fullDateSplit[1]) - 1 ;
+        var getMonth = parseInt(fullDateSplit[1]) - 1;
         var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], dateValue.hour, dateValue.minute);
         //var dateStop = new Date(2017, 2, 16, 17, 59, 55);
 
@@ -71,11 +72,32 @@ var Timeout = {
     },
 
     setDifferenceInterval: function () {
-        setInterval(function(){Timeout.durationEvent()}, 1000);
+        setInterval(function () {
+            Timeout.durationEvent()
+        }, 1000);
+    },
+
+    inputValid: function () {
+        var form = Timeout.getFormValue($('.set-time'));
+        if (form.fulldate == '' ||
+            form.hour.value == '' ||
+            form.minute == '') {
+            Timeout.show('.error-p');
+            return false
+        } else {
+            console.log('okeokeokeoke')
+            Timeout.getFormValue($('.set-time'));
+            Timeout.show('.difference-section');
+            Timeout.durationEvent();
+            Timeout.setDifferenceInterval();
+            Timeout.hide('.error-p');
+        }
     },
 
     onClearInterval: function () {
-        var myInterval = setInterval(Timeout.durationEvent(), 1000);
+        var myInterval = setInterval(function () {
+            Timeout.durationEvent()
+        }, 1000);
         var va = Timeout.setDifferenceInterval();
         $('#clear').on('click', function () {
             console.log('opoapaopa');
