@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<header>
+    <div class="time-block">
+        <div class="container">
+            <span class="current-time"></span>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="form-section">
+        <div class="container">
+            <form action="" class="set-time">
+                <div class="date-block">
+                    <label for="full-date">Year/Month/Day:</label>
+                    <input type="date"
+                           class="date"
+                           name="fulldate"
+                           id="full-date"
+                           maxlength="4"
+                           placeholder="yyyy-mm-dd"
+                           required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"/>
+                </div>
+                <div class="date-block">
+                    <label for="hour">Hour:</label>
+                    <input type="number" class="date" name="hour" id="hour" maxlength="2" min="1" max="23"
+                           placeholder="Hour"/>
+                </div>
+                <div class="date-block">
+                    <label for="minute">Minute:</label>
+                    <input type="number" class="date" name="minute" id="minute" maxlength="2" min="0" max="59"
+                           placeholder="Minute"/>
+                </div>
+                <div class="date-block">
+                    <label for="event">Name of event:</label>
+                    <textarea class="date" name="event" id="event" rows="3" placeholder="name of event"></textarea>
+                </div>
+            </form>
+            <button type="submit" class="btn-start">Start</button>
+            <div class="error-message invisible">
+                <p>Fill form correctly!</p>
+            </div>
+        </div>
+    </div>
+    <div class="difference-section invisible time-block">
+        <div class="container">
+            <div class="timeout">
+                <span class="event-remained"></span>
+                <span class="remained"></span>
+            </div>
+        </div>
+    </div>
+    <button id="clear">Stop Time!</button>
+</main>
+<footer>
+    <div class="container">
+        <span>Countdown App!</span>
+        <span>&copy ML 2017 </span>
+    </div>
+</footer>
+<script type="text/javascript" src="js/vendor.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+</body>
+</html>

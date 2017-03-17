@@ -29,7 +29,6 @@ var Timeout = {
             Timeout.inputValid(Timeout.getFormValue($('.set-time')));
             // todo get in variables
             Timeout.inactiveField($('.date'));
-            Timeout.resetForm($('.set-time'));
         });
     },
 
@@ -105,6 +104,7 @@ var Timeout = {
             Timeout.show('.difference-section');
             Timeout.setDifferenceInterval();
             Timeout.hide('.error-message');
+            Timeout.resetForm($('.set-time'));
         }
     },
 
