@@ -7,7 +7,7 @@ var Timeout = {
     init: function () {
         Timeout.setLocalTime();
         Timeout.onSetMax();
-        Timeout.onSend($('#start'));
+        Timeout.onSend($('.btn-start'));
         Timeout.onClearInterval();
     },
 
@@ -26,7 +26,7 @@ var Timeout = {
 
     onSend: function (btn) {
         $(btn).on('click', function () {
-            Timeout.inputValid();
+            Timeout.inputValid(Timeout.getFormValue($('.set-time')));
         });
     },
 
@@ -48,34 +48,34 @@ var Timeout = {
     },
 
     getFieldValue: function (section, field) {
-        var val = section.find(field).val();
-        return val;
+       return section.find(field).val();
     },
 
     //show time to designated event
     durationEvent: function () {
         var dateValue = Timeout.getFormValue($('.set-time'));
-        var dateStart = new Date();
+        var currentDate = new Date();
         var fullDateSplit = dateValue.fulldate.split('-');
         var getMonth = parseInt(fullDateSplit[1]) - 1;
         var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], dateValue.hour, dateValue.minute);
 
-        var difference = Math.abs(dateStop.getTime() - dateStart.getTime());
+        var difference = Math.abs(dateStop.getTime() - currentDate.getTime());
         var secDifference = difference / 1000;
 
-        var days = Math.floor(secDifference / 3600 / 24);
-        var hours = Math.floor(secDifference / 3600 % 24);
-        var minutes = Math.floor(secDifference / 60 % 60);
-        var seconds = Math.floor(secDifference % 60);
+        var myDate = {
+            days: Math.floor(secDifference / 3600 / 24),
+            hours: Math.floor(secDifference / 3600 % 24),
+            minutes: Math.floor(secDifference / 60 % 60),
+            seconds: Math.floor(secDifference % 60)
+        };
 
-        $('.event-remained').html('To designated ' + Timeout.isEmpty() + ' remained:');
-        $('.remained').html('Days: ' + days + ' Hours: ' + hours + ' Minutes: ' + minutes + ' Seconds: ' + seconds);
+        $('.event-remained').html('To designated ' + Timeout.isEmptyField(Timeout.getFieldValue($('.set-time'), $('#event'))) + ' remained:');
+        $('.remained').html('Days: ' + myDate.days + ' Hours: ' + myDate.hours + ' Minutes: ' + myDate.minutes + ' Seconds: ' + myDate.seconds);
     },
 
     //check text area and set value
-    isEmpty: function () {
-        var fieldValue = Timeout.getFieldValue($('.set-time'), $('#event'));
-        if (!fieldValue == '') {
+    isEmptyField: function (fieldValue) {
+        if (fieldValue != '') {
             return fieldValue;
         } else {
             return 'event';
@@ -89,22 +89,19 @@ var Timeout = {
         }, 1000);
     },
 
-    inputValid: function () {
-        var form = Timeout.getFormValue($('.set-time'));
+    inputValid: function (form) {
         if (form.fulldate == '' ||
             form.hour == '' ||
             form.hour > 23 ||
             form.minute == '' ||
             form.minute > 59) {
-            Timeout.show('.error-p');
+            Timeout.show('.error-message');
             return false
         } else {
-            console.log('okeokeokeoke');
             Timeout.getFormValue($('.set-time'));
             Timeout.show('.difference-section');
-            Timeout.durationEvent();
             Timeout.setDifferenceInterval();
-            Timeout.hide('.error-p');
+            Timeout.hide('.error-message');
         }
     },
 
