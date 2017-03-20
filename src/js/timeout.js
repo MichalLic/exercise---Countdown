@@ -1,9 +1,12 @@
 var Timeout = {
+    //variables
     DATE_VALUE: '',
     SET_INTERVAL: '',
     SET_TIME_GET_CL: $('.set-time'),
-    //variables
-
+    DATE_GET_CL: $('.date'),
+    DIFFERENCE_SECTION_CL: '.difference-section',
+    RESET_SECTION_CL: '.reset-section',
+    ERROR_MESSAGE_CL: '.error-message',
 
     //init
     init: function () {
@@ -30,11 +33,11 @@ var Timeout = {
             event.preventDefault();
             if (Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
                 Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
-                Timeout.show('.difference-section');
+                Timeout.show(Timeout.DIFFERENCE_SECTION_CL);
                 Timeout.setDifferenceInterval();
-                Timeout.inactiveField($('.date'));
+                Timeout.disabledFields(Timeout.DATE_GET_CL);
                 Timeout.onReset($('.clear'));
-                Timeout.show('.reset-section')
+                Timeout.show(Timeout.RESET_SECTION_CL)
             }
         });
     },
@@ -43,9 +46,10 @@ var Timeout = {
         $(btn).on('click', function () {
             event.preventDefault();
             Timeout.clearInterval();
-            Timeout.hide('.difference-section, .reset-section');
+            Timeout.hide(Timeout.DIFFERENCE_SECTION_CL);
+            Timeout.hide(Timeout.RESET_SECTION_CL);
             Timeout.resetForm(Timeout.SET_TIME_GET_CL);
-            Timeout.activeField($('.date'));
+            Timeout.activeField(Timeout.DATE_GET_CL);
         })
     },
 
@@ -57,6 +61,7 @@ var Timeout = {
         $(element).removeClass('show');
     },
 
+    //get data by map function
     getFormValue: function (form) {
         form = form.serializeArray();
         var dataValue = {};
@@ -114,16 +119,16 @@ var Timeout = {
             form.hour > 23 ||
             form.minute == '' ||
             form.minute > 59) {
-            Timeout.show('.error-message');
+            Timeout.show(Timeout.ERROR_MESSAGE_CL);
             return false;
         } else {
-            Timeout.hide('.error-message');
+            Timeout.hide(Timeout.ERROR_MESSAGE_CL);
             return true;
         }
     },
 
-    inactiveField: function (input) {
-        input.attr('disabled', 'disabled');
+    disabledFields: function (input) {
+        input.attr('disabled', true);
     },
 
     activeField: function (input) {
@@ -136,7 +141,7 @@ var Timeout = {
 
     //set max value if field has bad filling
     onSetMax: function () {
-        $('.date').on('input', function () {
+        Timeout.DATE_GET_CL.on('input', function () {
             var max = parseInt(this.max);
             if (parseInt(this.value) > max) {
                 this.value = max;
