@@ -41,3 +41,9 @@ a {
     color: $color-white;
     font-style: italic;
 }
+
+.date-block .error {
+    border: 1px solid rgba(199, 35, 33, 1);
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(212,37,35,.6)
+}

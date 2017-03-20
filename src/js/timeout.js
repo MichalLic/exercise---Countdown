@@ -66,7 +66,7 @@ var Timeout = {
     getFormValue: function (form) {
         form = form.serializeArray();
         var dataValue = {};
-        var reformattedArray = form.map(function (item) {
+        form.map(function (item) {
             dataValue[item.name] = item.value;
         });
         return dataValue;
@@ -100,7 +100,6 @@ var Timeout = {
             secondLabel: (myDate.seconds != 1) ? ' seconds ' : ' second '
         };
 
-
         $('.event-remained').html('To designated ' + Timeout.isEmptyField(Timeout.getFieldValue(Timeout.SET_TIME_GET_CL, $('#event'))) + ' remained:');
         $('.remained').html(myDate.days + formatDate.dayLabel + myDate.hours + formatDate.hourLabel + myDate.minutes + formatDate.minuteLabel + myDate.seconds + formatDate.secondLabel);
     },
@@ -123,11 +122,10 @@ var Timeout = {
     },
 
     inputValid: function (form) {
-        if (form.fulldate == '' ||
+        if (Timeout.isEmpty() ||
+            form.fulldate == '' ||
             form.hour == '' ||
-            form.hour > 23 ||
-            form.minute == '' ||
-            form.minute > 59) {
+            form.minute == '') {
             Timeout.show(Timeout.ERROR_MESSAGE_CL);
             return false;
         } else {
@@ -136,12 +134,22 @@ var Timeout = {
         }
     },
 
+    isEmpty: function () {
+        $('.empty').each(function (index, item) {
+            if (this.value == "") {
+                $(this).addClass('error');
+            } else {
+                $(this).removeClass('error')
+            }
+        });
+    },
+
     disabledFields: function (input) {
         input.attr('disabled', true);
     },
 
     activeField: function (input) {
-        input.attr('disabled', false)
+        input.attr('disabled', false);
     },
 
     resetForm: function (form) {
