@@ -31,13 +31,14 @@ var Timeout = {
     onSend: function (btn) {
         $(btn).on('click', function () {
             event.preventDefault();
+
             if (Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
                 Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
                 Timeout.show(Timeout.DIFFERENCE_SECTION_CL);
                 Timeout.setDifferenceInterval();
                 Timeout.disabledFields(Timeout.DATE_GET_CL);
                 Timeout.onReset($('.clear'));
-                Timeout.show(Timeout.RESET_SECTION_CL)
+                Timeout.show(Timeout.RESET_SECTION_CL);
             }
         });
     },
@@ -92,8 +93,16 @@ var Timeout = {
             seconds: Math.floor(secDifference % 60)
         };
 
-        $('.event-remained').html('To designated ' + Timeout.isEmptyField(Timeout.getFieldValue($('.set-time'), $('#event'))) + ' remained:');
-        $('.remained').html('Days: ' + myDate.days + ' Hours: ' + myDate.hours + ' Minutes: ' + myDate.minutes + ' Seconds: ' + myDate.seconds);
+        var formatDate = {
+            dayLabel: (myDate.days != 1) ? ' days ' : ' day ',
+            hourLabel: (myDate.hours != 1) ? ' hours ' : ' hour ',
+            minuteLabel: (myDate.minutes != 1 ) ? ' minutes ' : ' minute ',
+            secondLabel: (myDate.seconds != 1) ? ' seconds ' : ' second '
+        };
+
+
+        $('.event-remained').html('To designated ' + Timeout.isEmptyField(Timeout.getFieldValue(Timeout.SET_TIME_GET_CL, $('#event'))) + ' remained:');
+        $('.remained').html(myDate.days + formatDate.dayLabel + myDate.hours + formatDate.hourLabel + myDate.minutes + formatDate.minuteLabel + myDate.seconds + formatDate.secondLabel);
     },
 
     //check text area and set value
