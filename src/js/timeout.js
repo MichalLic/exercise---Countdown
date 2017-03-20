@@ -1,6 +1,7 @@
 var Timeout = {
     DATE_VALUE: '',
     SET_INTERVAL: '',
+    SET_TIME_GET_CL: $('.set-time'),
     //variables
 
 
@@ -27,8 +28,8 @@ var Timeout = {
     onSend: function (btn) {
         $(btn).on('click', function () {
             event.preventDefault();
-            if (Timeout.inputValid(Timeout.getFormValue($('.set-time')))) {
-                Timeout.DATE_VALUE = Timeout.getFormValue($('.set-time'));
+            if (Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
+                Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
                 Timeout.show('.difference-section');
                 Timeout.setDifferenceInterval();
                 Timeout.inactiveField($('.date'));
@@ -38,11 +39,13 @@ var Timeout = {
         });
     },
 
-    onReset: function(btn) {
-        $(btn).on('click', function (){
+    onReset: function (btn) {
+        $(btn).on('click', function () {
             event.preventDefault();
             Timeout.clearInterval();
-            Timeout.hide('.difference-section');
+            Timeout.hide('.difference-section, .reset-section');
+            Timeout.resetForm(Timeout.SET_TIME_GET_CL);
+            Timeout.activeField($('.date'));
         })
     },
 
@@ -57,7 +60,7 @@ var Timeout = {
     getFormValue: function (form) {
         form = form.serializeArray();
         var dataValue = {};
-        $.each(form, function (index, item) {
+        var reformattedArray = form.map(function (item) {
             dataValue[item.name] = item.value;
         });
         return dataValue;
@@ -99,6 +102,7 @@ var Timeout = {
 
     //countdown time to designated event
     setDifferenceInterval: function () {
+        Timeout.durationEvent();
         Timeout.SET_INTERVAL = setInterval(function () {
             Timeout.durationEvent();
         }, 1000);
@@ -126,10 +130,9 @@ var Timeout = {
         input.attr('disabled', false)
     },
 
-    //resetForm: function (form) {
-    //    setTimeout(function(){form[0].reset()}, 2000);
-    ////     @ todo mayby settime in general function??
-    //},
+    resetForm: function (form) {
+        form[0].reset();
+    },
 
     //set max value if field has bad filling
     onSetMax: function () {
