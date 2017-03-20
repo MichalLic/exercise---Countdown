@@ -94,14 +94,19 @@ var Timeout = {
         };
 
         var formatDate = {
-            dayLabel: (myDate.days != 1) ? ' days ' : ' day ',
-            hourLabel: (myDate.hours != 1) ? ' hours ' : ' hour ',
-            minuteLabel: (myDate.minutes != 1 ) ? ' minutes ' : ' minute ',
-            secondLabel: (myDate.seconds != 1) ? ' seconds ' : ' second '
+            dayLabel: (myDate.days >= 1 ) ? ' days ' : ' day ',
+            hourLabel: (myDate.hours >= 1) ? ' hours ' : ' hour ',
+            minuteLabel: (myDate.minutes >= 1 ) ? ' minutes ' : ' minute ',
+            secondLabel: (myDate.seconds >= 1) ? ' seconds ' : ' second '
         };
-
-        $('.event-remained').html('To designated ' + Timeout.isEmptyField(Timeout.getFieldValue(Timeout.SET_TIME_GET_CL, $('#event'))) + ' remained:');
-        $('.remained').html(myDate.days + formatDate.dayLabel + myDate.hours + formatDate.hourLabel + myDate.minutes + formatDate.minuteLabel + myDate.seconds + formatDate.secondLabel);
+        if (myDate.days == 0 && myDate.hours == 0 && myDate.minutes == 0 && myDate.seconds == 0) {
+            Timeout.clearInterval();
+            $(Timeout.DIFFERENCE_SECTION_CL).find('.timeout').remove();
+            $(Timeout.DIFFERENCE_SECTION_CL).find('.container').append("It's time!")
+        } else {
+            $('.event-remained').html('To designated ' + Timeout.isEmptyField(Timeout.getFieldValue(Timeout.SET_TIME_GET_CL, $('#event'))) + ' remained:');
+            $('.remained').html(myDate.days + formatDate.dayLabel + myDate.hours + formatDate.hourLabel + myDate.minutes + formatDate.minuteLabel + myDate.seconds + formatDate.secondLabel);
+        }
     },
 
     //check text area and set value
