@@ -1,5 +1,6 @@
 var Timeout = {
-
+    DATE_VALUE: '',
+    SET_INTERVAL: '',
     //variables
 
 
@@ -8,7 +9,6 @@ var Timeout = {
         Timeout.setLocalTime();
         Timeout.onSetMax();
         Timeout.onSend($('.btn-start'));
-        Timeout.onClearInterval();
     },
 
     //function
@@ -26,18 +26,32 @@ var Timeout = {
 
     onSend: function (btn) {
         $(btn).on('click', function () {
-            Timeout.inputValid(Timeout.getFormValue($('.set-time')));
-            // todo get in variables
-            Timeout.inactiveField($('.date'));
+            event.preventDefault();
+            if (Timeout.inputValid(Timeout.getFormValue($('.set-time')))) {
+                Timeout.DATE_VALUE = Timeout.getFormValue($('.set-time'));
+                Timeout.show('.difference-section');
+                Timeout.setDifferenceInterval();
+                Timeout.inactiveField($('.date'));
+                Timeout.onReset($('.clear'));
+                Timeout.show('.reset-section')
+            }
         });
     },
 
+    onReset: function(btn) {
+        $(btn).on('click', function (){
+            event.preventDefault();
+            Timeout.clearInterval();
+            Timeout.hide('.difference-section');
+        })
+    },
+
     show: function (element) {
-        $(element).addClass('visible');
+        $(element).addClass('show');
     },
 
     hide: function (element) {
-        $(element).removeClass('visible');
+        $(element).removeClass('show');
     },
 
     getFormValue: function (form) {
@@ -50,18 +64,15 @@ var Timeout = {
     },
 
     getFieldValue: function (section, field) {
-       return section.find(field).val();
+        return section.find(field).val();
     },
 
     //show time to designated event
     durationEvent: function () {
-        var dateValue = Timeout.getFormValue($('.set-time'));
         var currentDate = new Date();
-
-        var fullDateSplit = dateValue.fulldate.split('-');
-         /* @ TODO Cannot read property 'split' of undefine...*/
+        var fullDateSplit = Timeout.DATE_VALUE.fulldate.split('-');
         var getMonth = parseInt(fullDateSplit[1]) - 1;
-        var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], dateValue.hour, dateValue.minute);
+        var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], Timeout.DATE_VALUE.hour, Timeout.DATE_VALUE.minute);
 
         var difference = Math.abs(dateStop.getTime() - currentDate.getTime());
         var secDifference = difference / 1000;
@@ -88,7 +99,9 @@ var Timeout = {
 
     //countdown time to designated event
     setDifferenceInterval: function () {
-        setInterval(function () {Timeout.durationEvent()},1000);
+        Timeout.SET_INTERVAL = setInterval(function () {
+            Timeout.durationEvent();
+        }, 1000);
     },
 
     inputValid: function (form) {
@@ -98,24 +111,25 @@ var Timeout = {
             form.minute == '' ||
             form.minute > 59) {
             Timeout.show('.error-message');
-            return false
+            return false;
         } else {
-            Timeout.getFormValue($('.set-time'));
-            Timeout.show('.difference-section');
-            Timeout.setDifferenceInterval();
             Timeout.hide('.error-message');
-            Timeout.resetForm($('.set-time'));
+            return true;
         }
     },
 
-    inactiveField: function (input){
+    inactiveField: function (input) {
         input.attr('disabled', 'disabled');
     },
 
-    resetForm: function (form) {
-        setTimeout(function(){form[0].reset()}, 2000);
-    //     @ todo mayby settime in general function??
+    activeField: function (input) {
+        input.attr('disabled', false)
     },
+
+    //resetForm: function (form) {
+    //    setTimeout(function(){form[0].reset()}, 2000);
+    ////     @ todo mayby settime in general function??
+    //},
 
     //set max value if field has bad filling
     onSetMax: function () {
@@ -127,13 +141,8 @@ var Timeout = {
         });
     },
 
-    onClearInterval: function () {
-        var va = Timeout.setDifferenceInterval();
-        $('#clear').on('click', function () {
-            console.log('opoapaopa');
-            console.log(va);
-            clearInterval(Timeout.setDifferenceInterval());
-        });
+    clearInterval: function () {
+        clearInterval(Timeout.SET_INTERVAL);
     }
 
 };

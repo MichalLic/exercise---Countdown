@@ -42,13 +42,13 @@
                     <textarea class="date" name="event" id="event" rows="3" placeholder="name of event"></textarea>
                 </div>
             </form>
-            <button type="submit" class="btn-start">Start</button>
-            <div class="error-message invisible">
+            <button type="submit" class="btn-start btn-primary">Start</button>
+            <div class="error-message hide">
                 <p>Fill form correctly!</p>
             </div>
         </div>
     </div>
-    <div class="difference-section invisible time-block">
+    <div class="difference-section hide time-block">
         <div class="container">
             <div class="timeout">
                 <span class="event-remained"></span>
@@ -56,7 +56,11 @@
             </div>
         </div>
     </div>
-    <button id="clear">Stop Time!</button>
+    <div class="reset-section hide">
+        <div class="container">
+            <button class="btn-primary clear" onclick="/*Timeout.resetTimeout()*/">Reset Timeout!</button>
+        </div>
+    </div>
 </main>
 <footer>
     <div class="container">

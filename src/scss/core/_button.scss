@@ -1,4 +1,4 @@
-.btn-start {
+.btn-primary {
     display: inline-block;
     width: 100%;
     margin: 20px 0;
@@ -17,4 +17,10 @@
         outline: none;
         border: none;
     }
+}
+
+.clear{
+    display: block;
+    width: 184px;
+    margin: 0 auto;
 }
