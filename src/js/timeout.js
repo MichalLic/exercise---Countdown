@@ -11,7 +11,6 @@ var Timeout = {
     //init
     init: function () {
         Timeout.setLocalTime();
-        Timeout.onSetMax();
         Timeout.onSend($('.btn-start'));
     },
 
@@ -31,19 +30,19 @@ var Timeout = {
     onSend: function (btn) {
         $(btn).on('click', function () {
             event.preventDefault();
-                if (Timeout.calculations() && Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
-                    Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
-                    Timeout.show(Timeout.DIFFERENCE_SECTION_CL);
-                    Timeout.setDifferenceInterval();
-                    Timeout.disabledFields(Timeout.DATE_GET_CL);
-                    Timeout.onReset($('.clear'));
-                    Timeout.show(Timeout.RESET_SECTION_CL);
-                }
+            if (Timeout.calculations() && Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
+                Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
+                Timeout.show(Timeout.DIFFERENCE_SECTION_CL);
+                Timeout.setDifferenceInterval();
+                Timeout.disabledFields(Timeout.DATE_GET_CL);
+                Timeout.onReset();
+                Timeout.show(Timeout.RESET_SECTION_CL);
+            }
         });
     },
 
-    onReset: function (btn) {
-        $(btn).on('click', function () {
+    onReset: function () {
+        $('.clear').on('click', function () {
             event.preventDefault();
             Timeout.clearInterval();
             Timeout.hide(Timeout.DIFFERENCE_SECTION_CL);
@@ -61,7 +60,7 @@ var Timeout = {
         $(element).removeClass('show');
     },
 
-    //get data by map function
+    /*get data by map function*/
     getFormValue: function (form) {
         form = form.serializeArray();
         var dataValue = {};
@@ -75,10 +74,11 @@ var Timeout = {
         return section.find(field).val();
     },
 
-    //show time to designated event
+    /*show time to designated event*/
     durationEvent: function () {
         var currentDate = new Date();
         var fullDateSplit = Timeout.DATE_VALUE.fulldate.split('-');
+        /*JavaScript counts months from 0 to 11. January is 0. December is 11.*/
         var getMonth = parseInt(fullDateSplit[1]) - 1;
         var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], Timeout.DATE_VALUE.hour, Timeout.DATE_VALUE.minute);
 
@@ -93,10 +93,10 @@ var Timeout = {
         };
 
         var formatDate = {
-            dayLabel: (myDate.days >= 1 ) ? ' days ' : ' day ',
-            hourLabel: (myDate.hours >= 1) ? ' hours ' : ' hour ',
-            minuteLabel: (myDate.minutes >= 1 ) ? ' minutes ' : ' minute ',
-            secondLabel: (myDate.seconds >= 1) ? ' seconds ' : ' second '
+            dayLabel: (myDate.days > 1 ) ? ' days ' : ' day ',
+            hourLabel: (myDate.hours > 1) ? ' hours ' : ' hour ',
+            minuteLabel: (myDate.minutes > 1 ) ? ' minutes ' : ' minute ',
+            secondLabel: (myDate.seconds > 1) ? ' seconds ' : ' second '
         };
         if (myDate.days == 0 && myDate.hours == 0 && myDate.minutes == 0 && myDate.seconds == 0) {
             Timeout.clearInterval();
@@ -108,7 +108,7 @@ var Timeout = {
         }
     },
 
-    //check text area and set value
+    /*check text area and set value*/
     isEmptyField: function (fieldValue) {
         if (fieldValue != '') {
             return fieldValue;
@@ -117,7 +117,7 @@ var Timeout = {
         }
     },
 
-    //countdown time to designated event
+    /*countdown time to designated event*/
     setDifferenceInterval: function () {
         Timeout.durationEvent();
         Timeout.SET_INTERVAL = setInterval(function () {
@@ -127,9 +127,11 @@ var Timeout = {
 
     inputValid: function (form) {
         if (Timeout.isEmpty() ||
-            form.fulldate == '' ||
-            form.hour == '' ||
-            form.minute == '') {
+            form.fulldate.length == 0 ||
+            form.hour.length == 0 ||
+            form.hour > 23 ||
+            form.minute > 59 ||
+            form.minute.length == 0) {
             Timeout.show(Timeout.ERROR_MESSAGE_CL);
             return false;
         } else {
@@ -139,8 +141,8 @@ var Timeout = {
     },
 
     isEmpty: function () {
-        $('.empty').each(function (index, item) {
-            if (this.value == "") {
+        $('.empty').each(function () {
+            if (this.value == '') {
                 $(this).addClass('error');
             } else {
                 $(this).removeClass('error')
@@ -175,16 +177,6 @@ var Timeout = {
             alert('That date passed!');
             return false;
         }
-    },
-
-    //set max value if field has bad filling
-    onSetMax: function () {
-        Timeout.DATE_GET_CL.on('input', function () {
-            var max = parseInt(this.max);
-            if (parseInt(this.value) > max) {
-                this.value = max;
-            }
-        });
     },
 
     clearInterval: function () {
