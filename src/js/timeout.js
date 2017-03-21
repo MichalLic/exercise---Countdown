@@ -31,15 +31,14 @@ var Timeout = {
     onSend: function (btn) {
         $(btn).on('click', function () {
             event.preventDefault();
-
-            if (Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
-                Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
-                Timeout.show(Timeout.DIFFERENCE_SECTION_CL);
-                Timeout.setDifferenceInterval();
-                Timeout.disabledFields(Timeout.DATE_GET_CL);
-                Timeout.onReset($('.clear'));
-                Timeout.show(Timeout.RESET_SECTION_CL);
-            }
+                if (Timeout.calculations() && Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
+                    Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
+                    Timeout.show(Timeout.DIFFERENCE_SECTION_CL);
+                    Timeout.setDifferenceInterval();
+                    Timeout.disabledFields(Timeout.DATE_GET_CL);
+                    Timeout.onReset($('.clear'));
+                    Timeout.show(Timeout.RESET_SECTION_CL);
+                }
         });
     },
 
@@ -159,6 +158,23 @@ var Timeout = {
 
     resetForm: function (form) {
         form[0].reset();
+    },
+
+    calculations: function () {
+        var currentTime = new Date().getTime();
+        var values = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
+        var fullDateSplit = values.fulldate.split('-');
+        var getMonth = parseInt(fullDateSplit[1]) - 1;
+        var eventTime = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], values.hour, values.minute);
+        var eventTimeString = eventTime.getTime();
+
+        if (currentTime < eventTimeString) {
+            return true;
+        } else {
+            $('input').addClass('error');
+            alert('That date passed!');
+            return false;
+        }
     },
 
     //set max value if field has bad filling
