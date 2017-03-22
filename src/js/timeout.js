@@ -7,6 +7,7 @@ var Timeout = {
     DIFFERENCE_SECTION_CL: '.difference-section',
     RESET_SECTION_CL: '.reset-section',
     ERROR_MESSAGE_CL: '.error-message',
+    FULL_DATE: '',
 
     //init
     init: function () {
@@ -30,8 +31,10 @@ var Timeout = {
     onSend: function () {
         $('.btn-start').on('click', function (e) {
             e.preventDefault();
-            if (Timeout.calculations() && Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
+            if (Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
                 Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
+                Timeout.FULL_DATE = Timeout.DATE_VALUE.fulldate;
+                console.log(Timeout.getFormDate());
                 Timeout.show(Timeout.DIFFERENCE_SECTION_CL);
                 Timeout.setDifferenceInterval();
                 Timeout.disabledFields(Timeout.DATE_GET_CL);
@@ -60,7 +63,6 @@ var Timeout = {
         $(element).removeClass('show');
     },
 
-
     /**
      * get data by map function
      * @param form
@@ -75,20 +77,23 @@ var Timeout = {
         return dataValue;
     },
 
-    getFieldValue: function (section, field) {
-        return section.find(field).val();
-    },
-
     /*show time to designated event*/
     durationEvent: function () {
         var currentDate = new Date();
-        var fullDateSplit = Timeout.DATE_VALUE.fulldate.split('-');
+        var fullDate = Timeout.FULL_DATE;
+        var fullDateSplit = fullDate.split('-');
         //JavaScript counts months from 0 to 11. January is 0. December is 11.
         var getMonth = parseInt(fullDateSplit[1]) - 1;
         var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], Timeout.DATE_VALUE.hour, Timeout.DATE_VALUE.minute);
 
         var difference = Math.abs(dateStop.getTime() - currentDate.getTime());
         var secDifference = difference / 1000;
+
+        var getTextarea = Timeout.DATE_VALUE;
+        var textareaValue = getTextarea.event;
+
+        /*var xx = Timeout.getFormDate();
+         console.log(xx)*/
 
         var myDate = {
             days: Math.floor(secDifference / 3600 / 24),
@@ -103,12 +108,13 @@ var Timeout = {
             minuteLabel: (myDate.minutes > 1 ) ? ' minutes ' : ' minute ',
             secondLabel: (myDate.seconds > 1) ? ' seconds ' : ' second '
         };
+
         if (myDate.days == 0 && myDate.hours == 0 && myDate.minutes == 0 && myDate.seconds == 0) {
             Timeout.clearInterval();
             $(Timeout.DIFFERENCE_SECTION_CL).find('.timeout').remove();
             $(Timeout.DIFFERENCE_SECTION_CL).find('.container').append("It's time!")
         } else {
-            $('.event-remained').html('To designated ' + Timeout.isEmptyField(Timeout.getFieldValue(Timeout.SET_TIME_GET_CL, $('#event'))) + ' remained:');
+            $('.event-remained').html('To designated ' + Timeout.isEmptyField(textareaValue) + ' remained:');
             $('.remained').html(myDate.days + formatDate.dayLabel + myDate.hours + formatDate.hourLabel + myDate.minutes + formatDate.minuteLabel + myDate.seconds + formatDate.secondLabel);
         }
     },
@@ -137,28 +143,31 @@ var Timeout = {
     },
 
     inputValid: function (form) {
-        if (Timeout.isEmpty() ||
-            form.fulldate.length == 0 ||
-            form.hour.length == 0 ||
-            form.hour > 23 ||
-            form.minute > 59 ||
-            form.minute.length == 0) {
+        if (form.fulldate.length == 0) {
+            $('input[name=fulldate]').addClass('error');
+            Timeout.show(Timeout.ERROR_MESSAGE_CL);
+            return false;
+        } else if (form.hour.length == 0) {
+            $('input[name=hour]').addClass('error');
+            Timeout.show(Timeout.ERROR_MESSAGE_CL);
+            return false;
+        } else if (form.hour > 23) {
+            $('input[name=hour]').addClass('error');
+            Timeout.show(Timeout.ERROR_MESSAGE_CL);
+            return false;
+        } else if (form.minute > 59) {
+            $('input[name=minute]').addClass('error');
+            Timeout.show(Timeout.ERROR_MESSAGE_CL);
+            return false;
+        } else if (form.minute.length == 0) {
+            $('input[name=minute]').addClass('error');
             Timeout.show(Timeout.ERROR_MESSAGE_CL);
             return false;
         } else {
+            $('input').removeClass('error');
             Timeout.hide(Timeout.ERROR_MESSAGE_CL);
             return true;
         }
-    },
-
-    isEmpty: function () {
-        $('.empty').each(function () {
-            if (this.value == '') {
-                $(this).addClass('error');
-            } else {
-                $(this).removeClass('error')
-            }
-        });
     },
 
     disabledFields: function (input) {
@@ -171,23 +180,6 @@ var Timeout = {
 
     resetForm: function (form) {
         form[0].reset();
-    },
-
-    calculations: function () {
-        var currentTime = new Date().getTime();
-        var values = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
-        var fullDateSplit = values.fulldate.split('-');
-        var getMonth = parseInt(fullDateSplit[1]) - 1;
-        var eventTime = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], values.hour, values.minute);
-        var eventTimeString = eventTime.getTime();
-
-        if (currentTime < eventTimeString) {
-            return true;
-        } else {
-            $('input').addClass('error');
-            alert('That date passed!');
-            return false;
-        }
     },
 
     clearInterval: function () {
