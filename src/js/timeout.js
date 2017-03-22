@@ -31,10 +31,9 @@ var Timeout = {
     onSend: function () {
         $('.btn-start').on('click', function (e) {
             e.preventDefault();
+            Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
+            Timeout.FULL_DATE = Timeout.DATE_VALUE.fulldate;
             if (Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
-                Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
-                Timeout.FULL_DATE = Timeout.DATE_VALUE.fulldate;
-                console.log(Timeout.getFormDate());
                 Timeout.show(Timeout.DIFFERENCE_SECTION_CL);
                 Timeout.setDifferenceInterval();
                 Timeout.disabledFields(Timeout.DATE_GET_CL);
@@ -77,23 +76,35 @@ var Timeout = {
         return dataValue;
     },
 
-    /*show time to designated event*/
-    durationEvent: function () {
+    getFormDate: function () {
         var currentDate = new Date();
         var fullDate = Timeout.FULL_DATE;
         var fullDateSplit = fullDate.split('-');
         //JavaScript counts months from 0 to 11. January is 0. December is 11.
         var getMonth = parseInt(fullDateSplit[1]) - 1;
         var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], Timeout.DATE_VALUE.hour, Timeout.DATE_VALUE.minute);
-
         var difference = Math.abs(dateStop.getTime() - currentDate.getTime());
         var secDifference = difference / 1000;
-
         var getTextarea = Timeout.DATE_VALUE;
         var textareaValue = getTextarea.event;
 
-        /*var xx = Timeout.getFormDate();
-         console.log(xx)*/
+        return {
+            currentDate: new Date(),
+            fullDate: Timeout.FULL_DATE,
+            fullDateSplit: fullDate.split('-'),
+            getMonth: parseInt(fullDateSplit[1]) - 1,
+            dateStop: new Date(fullDateSplit[0], getMonth, fullDateSplit[2], Timeout.DATE_VALUE.hour, Timeout.DATE_VALUE.minute),
+            difference: Math.abs(dateStop.getTime() - currentDate.getTime()),
+            secDifference: difference / 1000,
+            getTextarea: Timeout.DATE_VALUE,
+            textareaValue: getTextarea.event
+        }
+    },
+
+    /*show time to designated event*/
+    durationEvent: function () {
+        var secDifference = Timeout.getFormDate().secDifference;
+        var textareaValue = Timeout.getFormDate().textareaValue;
 
         var myDate = {
             days: Math.floor(secDifference / 3600 / 24),
@@ -143,7 +154,12 @@ var Timeout = {
     },
 
     inputValid: function (form) {
-        if (form.fulldate.length == 0) {
+        if (Timeout.getFormDate().currentDate > Timeout.getFormDate().dateStop) {
+            $('input[name=fulldate]').addClass('error');
+            alert('That date passed!');
+            return false;
+        }
+        else if (form.fulldate.length == 0) {
             $('input[name=fulldate]').addClass('error');
             Timeout.show(Timeout.ERROR_MESSAGE_CL);
             return false;
