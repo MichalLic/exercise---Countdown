@@ -11,7 +11,7 @@ var Timeout = {
     //init
     init: function () {
         Timeout.setLocalTime();
-        Timeout.onSend($('.btn-start'));
+        Timeout.onSend();
     },
 
     //function
@@ -27,9 +27,9 @@ var Timeout = {
         }, 1000);
     },
 
-    onSend: function (btn) {
-        $(btn).on('click', function () {
-            event.preventDefault();
+    onSend: function () {
+        $('.btn-start').on('click', function (e) {
+            e.preventDefault();
             if (Timeout.calculations() && Timeout.inputValid(Timeout.getFormValue(Timeout.SET_TIME_GET_CL))) {
                 Timeout.DATE_VALUE = Timeout.getFormValue(Timeout.SET_TIME_GET_CL);
                 Timeout.show(Timeout.DIFFERENCE_SECTION_CL);
@@ -42,8 +42,8 @@ var Timeout = {
     },
 
     onReset: function () {
-        $('.clear').on('click', function () {
-            event.preventDefault();
+        $('.clear').on('click', function (e) {
+            e.preventDefault();
             Timeout.clearInterval();
             Timeout.hide(Timeout.DIFFERENCE_SECTION_CL);
             Timeout.hide(Timeout.RESET_SECTION_CL);
@@ -60,7 +60,12 @@ var Timeout = {
         $(element).removeClass('show');
     },
 
-    /*get data by map function*/
+
+    /**
+     * get data by map function
+     * @param form
+     * @returns {{}}
+     */
     getFormValue: function (form) {
         form = form.serializeArray();
         var dataValue = {};
@@ -78,7 +83,7 @@ var Timeout = {
     durationEvent: function () {
         var currentDate = new Date();
         var fullDateSplit = Timeout.DATE_VALUE.fulldate.split('-');
-        /*JavaScript counts months from 0 to 11. January is 0. December is 11.*/
+        //JavaScript counts months from 0 to 11. January is 0. December is 11.
         var getMonth = parseInt(fullDateSplit[1]) - 1;
         var dateStop = new Date(fullDateSplit[0], getMonth, fullDateSplit[2], Timeout.DATE_VALUE.hour, Timeout.DATE_VALUE.minute);
 
@@ -108,7 +113,11 @@ var Timeout = {
         }
     },
 
-    /*check text area and set value*/
+    /**
+     * check text area and set value
+     * @param fieldValue
+     * @returns {*}
+     */
     isEmptyField: function (fieldValue) {
         if (fieldValue != '') {
             return fieldValue;
@@ -117,7 +126,9 @@ var Timeout = {
         }
     },
 
-    /*countdown time to designated event*/
+    /**
+     * countdown time to designated event
+     */
     setDifferenceInterval: function () {
         Timeout.durationEvent();
         Timeout.SET_INTERVAL = setInterval(function () {
